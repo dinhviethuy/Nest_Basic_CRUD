@@ -11,7 +11,11 @@ export class PostsService {
         authorId: userId,
       },
       include: {
-        author: true,
+        author: {
+          omit: {
+            password: true,
+          },
+        },
       },
     })
   }
