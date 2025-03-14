@@ -1,15 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../../shared/services/prisma.service'
-import envConfig from 'src/shared/config'
 
 @Injectable()
 export class PostsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   getPosts() {
-    console.log(envConfig.ACCESS_TOKEN_SECRET)
     return this.prismaService.post.findMany()
   }
   createPost(body: any): any {
