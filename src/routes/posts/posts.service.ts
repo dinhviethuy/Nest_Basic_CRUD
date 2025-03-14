@@ -6,7 +6,7 @@ import envConfig from 'src/shared/config'
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(private readonly prismaService: PrismaService) {}
 
   getPosts() {
     console.log(envConfig.ACCESS_TOKEN_SECRET)
