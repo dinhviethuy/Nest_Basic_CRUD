@@ -11,7 +11,7 @@ export class AuthService {
     private readonly hashingService: HashingService,
     private readonly prismaService: PrismaService,
     private readonly tokenService: TokenService,
-  ) { }
+  ) {}
   async register(body: RegisterBodyDTO) {
     try {
       const hashedPassword = await this.hashingService.hash(body.password)
@@ -35,7 +35,7 @@ export class AuthService {
     const user = await this.prismaService.user.findUnique({
       where: {
         email: body.email,
-      }
+      },
     })
     if (!user) {
       throw new UnauthorizedException('Email không tồn tại')
@@ -62,11 +62,34 @@ export class AuthService {
         token: refreshToken,
         userId: payload.userId,
         expiresAt: new Date(decodedRefreshToken.exp * 1000),
-      }
+      },
     })
     return {
       accessToken,
       refreshToken,
+    }
+  }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      const { userId } = await this.tokenService.verifyRefreshToken(refreshToken)
+      await this.prismaService.refreshToken.findFirstOrThrow({
+        where: {
+          token: refreshToken,
+        },
+      })
+      await this.prismaService.refreshToken.delete({
+        where: {
+          token: refreshToken,
+        },
+      })
+      const tokens = await this.generateTokens({ userId })
+      return tokens
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        throw new UnauthorizedException('Refresh token không hợp lệ')
+      }
+      throw new UnauthorizedException()
     }
   }
 }

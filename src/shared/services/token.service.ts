@@ -1,13 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import envConfig from '../config';
-import { TokenPayload } from '../types/jwt.type';
+import { Injectable } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import envConfig from '../config'
+import { TokenPayload } from '../types/jwt.type'
 
 @Injectable()
 export class TokenService {
-  constructor(
-    private readonly jwtService: JwtService,
-  ) { }
+  constructor(private readonly jwtService: JwtService) {}
 
   signAccessToken(payload: { userId: number }) {
     return this.jwtService.sign(payload, {
@@ -27,13 +25,13 @@ export class TokenService {
 
   verifyAccessToken(token: string): Promise<TokenPayload> {
     return this.jwtService.verifyAsync(token, {
-      secret: envConfig.ACCESS_TOKEN_SECRET
+      secret: envConfig.ACCESS_TOKEN_SECRET,
     })
   }
 
   verifyRefreshToken(token: string): Promise<TokenPayload> {
     return this.jwtService.verifyAsync(token, {
-      secret: envConfig.REFRESH_TOKEN_SECRET
+      secret: envConfig.REFRESH_TOKEN_SECRET,
     })
   }
 }

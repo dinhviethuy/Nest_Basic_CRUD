@@ -16,6 +16,11 @@ export class RegisterBodyDTO extends LoginBodyDTO {
   name: string
 }
 
+export class RefreshTokenBodyDTO {
+  @IsString()
+  refreshToken: string
+}
+
 export class LoginResDTO {
   accessToken: string
   refreshToken: string
@@ -23,6 +28,8 @@ export class LoginResDTO {
     Object.assign(this, partial)
   }
 }
+
+export class RefreshTokenResDTO extends LoginResDTO {}
 
 // export class RegisterResDTO {
 //   id: number

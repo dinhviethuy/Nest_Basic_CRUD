@@ -1,5 +1,5 @@
 export interface TokenPayload {
-  userId: number,
+  userId: number
   exp: number
   iat: number
 }

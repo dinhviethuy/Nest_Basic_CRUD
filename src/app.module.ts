@@ -5,7 +5,7 @@ import { PostsModule } from './routes/posts/posts.module'
 import { SharedModule } from './shared/shared.module'
 import { AuthModule } from './routes/auth/auth.module'
 import { APP_INTERCEPTOR } from '@nestjs/core'
-import { TokenService } from './shared/services/token.service';
+import { TokenService } from './shared/services/token.service'
 import { JwtModule } from '@nestjs/jwt'
 
 @Module({
@@ -20,4 +20,4 @@ import { JwtModule } from '@nestjs/jwt'
     TokenService,
   ],
 })
-export class AppModule { }
+export class AppModule {}
