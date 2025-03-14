@@ -24,6 +24,8 @@ class ConfigSchema {
   REFRESH_TOKEN_SECRET: string
   @IsString()
   REFRESH_TOKEN_EXPIRES_IN: string
+  @IsString()
+  SECRET_API_KEY: string
 }
 
 const configServer = plainToClass(ConfigSchema, process.env, {
