@@ -3,6 +3,7 @@ import { PostsService } from './posts.service'
 import { Auth } from 'src/shared/decorators/auth.decorator'
 import { AuthType, ConditionGuard } from '../../shared/constants/auth.constant'
 import { ActiveUser } from 'src/shared/decorators/active-user.decorator'
+import { GetPostItemDTO } from './post.dto'
 
 @Controller('posts')
 export class PostsController {
@@ -10,8 +11,10 @@ export class PostsController {
 
   @Auth([AuthType.Bearer, AuthType.APIKey], { condition: ConditionGuard.Or })
   @Get()
-  getPosts() {
-    return this.postsService.getPosts()
+  getPosts(@ActiveUser('userId') userId: number) {
+    return this.postsService.getPosts(userId).then((posts) => {
+      return posts.map((post) => new GetPostItemDTO(post))
+    })
   }
   @Post()
   @Auth([AuthType.Bearer])
