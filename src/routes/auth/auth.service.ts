@@ -1,9 +1,9 @@
 import { ConflictException, Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
 import { HashingService } from 'src/shared/services/hashing.service'
 import { PrismaService } from 'src/shared/services/prisma.service'
 import { LoginBodyDTO, RegisterBodyDTO } from './auth.dto'
 import { TokenService } from 'src/shared/services/token.service'
+import { isNotFoundPrismaError, isUniqueConstraintPrismaError } from 'src/shared/helpers'
 
 @Injectable()
 export class AuthService {
@@ -24,7 +24,7 @@ export class AuthService {
       })
       return user
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      if (isUniqueConstraintPrismaError(error)) {
         throw new ConflictException('Email đã tồn tại')
       }
       throw error
@@ -86,7 +86,7 @@ export class AuthService {
       const tokens = await this.generateTokens({ userId })
       return tokens
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      if (isNotFoundPrismaError(error)) {
         throw new UnauthorizedException('Refresh token không hợp lệ')
       }
       throw new UnauthorizedException()
