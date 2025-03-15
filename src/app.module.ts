@@ -5,11 +5,9 @@ import { PostsModule } from './routes/posts/posts.module'
 import { SharedModule } from './shared/shared.module'
 import { AuthModule } from './routes/auth/auth.module'
 import { APP_INTERCEPTOR } from '@nestjs/core'
-import { TokenService } from './shared/services/token.service'
-import { JwtModule } from '@nestjs/jwt'
 
 @Module({
-  imports: [PostsModule, SharedModule, AuthModule, JwtModule],
+  imports: [PostsModule, SharedModule, AuthModule],
   controllers: [AppController],
   providers: [
     AppService,
@@ -17,7 +15,6 @@ import { JwtModule } from '@nestjs/jwt'
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
     },
-    TokenService,
   ],
 })
 export class AppModule {}

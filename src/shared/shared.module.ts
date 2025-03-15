@@ -8,12 +8,14 @@ import { APIKeyGuard } from './guards/api-key.guard'
 import { APP_GUARD } from '@nestjs/core'
 import { AuthenticationGuard } from './guards/authentication.guard'
 
-const sharedServices = [PrismaService, HashingService, TokenService, AccessTokenGuard, APIKeyGuard]
+const sharedServices = [PrismaService, HashingService, TokenService]
 
 @Global()
 @Module({
   providers: [
     ...sharedServices,
+    AccessTokenGuard,
+    APIKeyGuard,
     {
       provide: APP_GUARD, // đăng ký guard ở mức global
       useClass: AuthenticationGuard,
